@@ -16,7 +16,7 @@ O sistema foi projetado para substituir planilhas e cadernos, oferecendo control
 *(Adicione suas prints na pasta `screenshots` e descomente as linhas abaixo)*
 
 ![PDV](public/images/login.jpeg) 
-![Dashboard](public/images/dashboard.jpeg)
+
 
 ---
 
@@ -44,6 +44,8 @@ O sistema foi projetado para substituir planilhas e cadernos, oferecendo control
   - **VENDEDOR:** Apenas PDV.
   - **FINANCEIRO:** Apenas fluxo de caixa.
 - **Proteção:** Senhas criptografadas com `bcrypt` e sessões seguras.
+
+![Dashboard](public/images/dashboard.jpeg)
 
 ---
 
