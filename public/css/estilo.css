@@ -1,0 +1,103 @@
+/* Fundo Escuro e Fonte */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Títulos Dourados */
+h1, h2, h3 {
+    color: #D4AF37; /* Dourado Médio */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #D4AF37;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Menu de Navegação */
+nav {
+    margin-bottom: 30px;
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+nav a {
+    color: #D4AF37;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #D4AF37;
+}
+
+/* Cartões do Dashboard */
+.cards-container {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: #1e1e1e;
+    border: 1px solid #D4AF37;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.valor {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #1e1e1e;
+}
+
+th {
+    background: #333;
+    color: #D4AF37;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+/* Formulários */
+input, select, button {
+    padding: 10px;
+    margin: 5px 0;
+    background: #2c2c2c;
+    border: 1px solid #D4AF37;
+    color: white;
+    border-radius: 4px;
+}
+
+button {
+    background: #D4AF37;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #b59020;
+}

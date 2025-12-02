@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Pedido - Sistema Loja</title>
+    <style>
+        /* --- ESTILO TEMA DARK BLUE (Baseado na Imagem) --- */
+        * { box-sizing: border-box; outline: none; font-family: 'Segoe UI', sans-serif; }
+        
+        body {
+            background-color: #151922; /* Fundo bem escuro */
+            color: #cfd8dc;
+            margin: 0; padding: 20px;
+            height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        /* Botão de Voltar */
+.btn-voltar {
+    text-decoration: none;
+    color: #8899a6;
+    background-color: #1a1f2e;
+    border: 1px solid #374151;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    margin-right: 20px; /* Espaço entre o botão e o título */
+}
+.btn-voltar:hover {
+    background-color: #D4AF37;
+    color: #1a1f2e;
+    border-color: #D4AF37;
+}
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid #2d3748; padding-bottom: 10px;
+        }
+        .header-info h2 { color: #fff; margin: 0; font-size: 1.5rem; }
+        .header-info span { color: #D4AF37; font-weight: bold; margin-left: 10px; }
+        .status-badge { background: #1a1f2e; border: 1px solid #4a5568; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
+
+        /* GRID PRINCIPAL (Esquerda e Direita) */
+        .main-container {
+            display: grid; grid-template-columns: 3fr 1fr; gap: 20px;
+            height: 100%; overflow: hidden;
+        }
+
+        /* CAIXAS (Cards) */
+        .box {
+            background-color: #1e2532; /* Azul acinzentado */
+            border: 1px solid #2d3748;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .box-title {
+            color: #D4AF37; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;
+            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+        }
+
+        /* FORMULÁRIOS */
+        label { display: block; font-size: 0.8rem; color: #8899a6; margin-bottom: 5px; }
+        
+        input, select, textarea {
+            background: #151922; border: 1px solid #374151; color: #fff;
+            padding: 10px; border-radius: 4px; width: 100%; font-size: 0.9rem;
+        }
+        input:focus { border-color: #D4AF37; }
+
+        /* Linha de Inserir Produto */
+        .insert-row { display: grid; grid-template-columns: 4fr 1.5fr 1fr 1fr 1.5fr; gap: 10px; align-items: end; }
+        
+        .btn-add {
+            background: #D4AF37; color: #1a1f2e; border: none; font-weight: bold;
+            height: 40px; border-radius: 4px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-add:hover { background: #eab308; }
+
+        /* TABELA DE ITENS */
+        .table-container { height: 250px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { text-align: left; color: #D4AF37; border-bottom: 1px solid #374151; padding: 10px; font-size: 0.8rem; text-transform: uppercase; }
+        td { border-bottom: 1px solid #2d3748; padding: 10px; color: #fff; }
+        tr:hover { background: #252d3d; }
+
+        /* LOGÍSTICA */
+        .logistica-row { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 15px; }
+
+        /* SIDEBAR (DIREITA) */
+        .sidebar { display: flex; flex-direction: column; height: 100%; }
+        
+        .resumo-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
+        .total-zao { 
+            font-size: 2rem; color: #D4AF37; text-align: right; font-weight: bold; margin: 20px 0; border-top: 1px dashed #444; padding-top: 10px;
+        }
+
+        .btn-finalizar {
+            width: 100%; background: #D4AF37; color: #1a1f2e; padding: 15px;
+            font-size: 1.1rem; font-weight: bold; border: none; border-radius: 4px;
+            cursor: pointer; margin-top: auto;
+        }
+        .btn-cancelar {
+            text-align: center; color: #ef4444; margin-top: 15px; cursor: pointer; text-decoration: underline;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #151922; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO COM NAVEGAÇÃO -->
+<div class="header-top">
+    <!-- Adicionamos esta div para agrupar o botão e o título -->
+    <div style="display: flex; align-items: center;">
+        <a href="/" class="btn-voltar">⬅ MENU PRINCIPAL</a>
+        
+        <div class="header-info">
+            <h2>NÚMERO DO PEDIDO <span>NOVO</span></h2>
+            <div style="font-size: 0.9rem; color: #888; margin-top: 5px;">
+                DATA: <span style="color:#fff" id="dataHoje"></span> | VENDEDOR: <span style="color:#fff">Administrador</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status-badge">Em Aberto</div>
+</div>
+
+    <div class="main-container">
+        
+        <!-- LADO ESQUERDO (OPERAÇÃO) -->
+        <div class="left-panel">
+            
+            <!-- 1. INSERIR PRODUTOS -->
+            <div class="box">
+                <div class="box-title">📦 INSERIR PRODUTOS</div>
+                <div class="insert-row">
+                    <!-- Busca Inteligente (Datalist) -->
+                    <div>
+                        <label>Produto (Busca por Nome ou Cód)</label>
+                        <input list="lista-produtos" id="inputBusca" placeholder="Digite para buscar..." onchange="carregarPreco()">
+                        <datalist id="lista-produtos">
+                            <!-- Preenchido via API -->
+                        </datalist>
+                    </div>
+                    
+                    <div>
+                        <label>Preço Unit.</label>
+                        <input type="number" id="inputPreco" step="0.01">
+                    </div>
+                    
+                    <div>
+                        <label>Qtd.</label>
+                        <input type="number" id="inputQtd" value="1" min="1">
+                    </div>
+                    
+                    <div>
+                        <label>Desc.(R$)</label>
+                        <input type="number" id="inputDescItem" value="0.00" step="0.01">
+                    </div>
+                    
+                    <button class="btn-add" onclick="adicionarItem()">⬇ Adicionar</button>
+                </div>
+            </div>
+
+            <!-- 2. TABELA DE ITENS -->
+            <div class="box">
+                <div class="table-container">
+                    <table id="tabelaItens">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>QTD</th>
+                                <th>UNITÁRIO</th>
+                                <th>DESC.</th>
+                                <th>TOTAL</th>
+                                <th>AÇÃO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Itens via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. LOGÍSTICA E OBSERVAÇÕES -->
+            <div class="box">
+                <div class="box-title">🚚 LOGÍSTICA E OBSERVAÇÕES</div>
+                <div class="logistica-row">
+                    <div>
+                        <label>Transportadora / Frete</label>
+                        <select id="inputTransportadora">
+                            <option value="Retirada">Retirada na Loja</option>
+                            <option value="Correios">Correios</option>
+                            <option value="Jadlog">Jadlog</option>
+                            <option value="Motoboy">Motoboy</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Valor Frete (R$)</label>
+                        <input type="number" id="inputFrete" value="0.00" step="0.01" onchange="calcularTotais()">
+                    </div>
+                    <div>
+                        <label>Data Entrega Prevista</label>
+                        <input type="date" id="inputDataEntrega">
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <label>Observações Internas / Pedido</label>
+                    <textarea id="inputObs" rows="2" placeholder="Ex: Cliente pediu para embrulhar para presente..."></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LADO DIREITO (FINANCEIRO) -->
+        <div class="sidebar">
+            <div class="box" style="height: 100%; display: flex; flex-direction: column;">
+                <div class="box-title">Resumo Financeiro</div>
+                
+                <div class="resumo-line">
+                    <span>Subtotal Itens:</span>
+                    <span id="txtSubtotal">R$ 0,00</span>
+                </div>
+                <div class="resumo-line">
+                    <span>(-) Descontos Itens:</span>
+                    <span id="txtDescontos" style="color:#ef4444">R$ 0.00</span>
+                </div>
+                <div class="resumo-line">
+                    <span>(+) Frete:</span>
+                    <span id="txtFrete">R$ 0,00</span>
+                </div>
+                <div class="resumo-line" style="margin-bottom: 20px;">
+                    <label>Desconto Extra (R$):</label>
+                    <input type="number" id="inputDescontoGlobal" value="0.00" style="text-align: right;" onchange="calcularTotais()">
+                </div>
+
+                <div class="total-zao" id="txtTotalFinal">R$ 0,00</div>
+
+                <div style="margin-top: 20px;">
+                    <label>Forma de Pagamento</label>
+                    <select id="inputPagamento">
+                        <option>Dinheiro</option>
+                        <option>Cartão de Crédito</option>
+                        <option>Cartão de Débito</option>
+                        <option>PIX</option>
+                        <option>Boleto Bancário</option>
+                    </select>
+                </div>
+
+                <button class="btn-finalizar" onclick="finalizarPedido()">✅ FINALIZAR PEDIDO</button>
+                <div class="btn-cancelar" onclick="location.reload()">Cancelar Pedido</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPTS DE LÓGICA -->
+    <script>
+        let carrinho = [];
+        let produtosDb = []; // Guarda todos produtos pra buscar rápido
+
+        // Inicialização
+        window.onload = async () => {
+            // Data de hoje
+            document.getElementById('dataHoje').innerText = new Date().toLocaleDateString('pt-BR');
+            
+            // Carregar Produtos para o Datalist
+            const res = await fetch('/api/buscar-produto?q='); // Traz todos ou busca vazia
+            produtosDb = await res.json();
+            
+            const datalist = document.getElementById('lista-produtos');
+            produtosDb.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.nome; // O que aparece ao selecionar
+                option.setAttribute('data-id', p.id);
+                option.setAttribute('data-price', p.preco_venda);
+                datalist.appendChild(option);
+            });
+        };
+
+        // Quando seleciona um produto na lista
+        function carregarPreco() {
+            const nome = document.getElementById('inputBusca').value;
+            const produto = produtosDb.find(p => p.nome === nome);
+            
+            if(produto) {
+                document.getElementById('inputPreco').value = produto.preco_venda;
+                document.getElementById('inputQtd').focus();
+            }
+        }
+
+        // Botão Adicionar
+        function adicionarItem() {
+            const nome = document.getElementById('inputBusca').value;
+            const produto = produtosDb.find(p => p.nome === nome);
+            
+            if(!produto) return alert("Selecione um produto válido da lista!");
+
+            const qtd = parseFloat(document.getElementById('inputQtd').value);
+            const preco = parseFloat(document.getElementById('inputPreco').value);
+            const descItem = parseFloat(document.getElementById('inputDescItem').value) || 0;
+
+            if(qtd > produto.estoque) return alert(`Estoque insuficiente! Restam: ${produto.estoque}`);
+
+            const subtotal = (preco * qtd) - descItem;
+
+            carrinho.push({
+                id: produto.id,
+                nome: produto.nome,
+                qtd: qtd,
+                preco: preco,
+                desconto: descItem,
+                subtotal: subtotal
+            });
+
+            renderizarTabela();
+            limparInputs();
+        }
+
+        function renderizarTabela() {
+            const tbody = document.querySelector('#tabelaItens tbody');
+            tbody.innerHTML = '';
+
+            carrinho.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.nome}</td>
+                        <td>${item.qtd}</td>
+                        <td>R$ ${item.preco.toFixed(2)}</td>
+                        <td>R$ ${item.desconto.toFixed(2)}</td>
+                        <td>R$ ${item.subtotal.toFixed(2)}</td>
+                        <td>
+                            <button onclick="removerItem(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer;">✖</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            calcularTotais();
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            renderizarTabela();
+        }
+
+        function limparInputs() {
+            document.getElementById('inputBusca').value = '';
+            document.getElementById('inputPreco').value = '';
+            document.getElementById('inputQtd').value = '1';
+            document.getElementById('inputDescItem').value = '0.00';
+            document.getElementById('inputBusca').focus();
+        }
+
+        function calcularTotais() {
+            let subtotalItens = 0;
+            let descontoItens = 0;
+
+            carrinho.forEach(i => {
+                subtotalItens += (i.preco * i.qtd);
+                descontoItens += i.desconto;
+            });
+
+            const frete = parseFloat(document.getElementById('inputFrete').value) || 0;
+            const descGlobal = parseFloat(document.getElementById('inputDescontoGlobal').value) || 0;
+
+            const totalFinal = (subtotalItens - descontoItens) + frete - descGlobal;
+
+            // Atualizar HTML
+            document.getElementById('txtSubtotal').innerText = `R$ ${subtotalItens.toFixed(2)}`;
+            document.getElementById('txtDescontos').innerText = `R$ ${(descontoItens + descGlobal).toFixed(2)}`;
+            document.getElementById('txtFrete').innerText = `R$ ${frete.toFixed(2)}`;
+            document.getElementById('txtTotalFinal').innerText = `R$ ${totalFinal.toFixed(2)}`;
+            
+            return totalFinal; // Retorna para uso no finalizar
+        }
+
+        async function finalizarPedido() {
+            if(carrinho.length === 0) return alert("Adicione produtos ao pedido!");
+
+            const dadosPedido = {
+                vendedor: 'Administrador', // Poderia pegar de login
+                itens: carrinho,
+                total_produtos: carrinho.reduce((acc, i) => acc + i.subtotal, 0),
+                total_final: calcularTotais(),
+                pagamento: document.getElementById('inputPagamento').value,
+                
+                // Novos Campos
+                desconto: parseFloat(document.getElementById('inputDescontoGlobal').value),
+                frete: parseFloat(document.getElementById('inputFrete').value),
+                transportadora: document.getElementById('inputTransportadora').value,
+                data_entrega: document.getElementById('inputDataEntrega').value,
+                observacoes: document.getElementById('inputObs').value
+            };
+
+            const res = await fetch('/api/finalizar-venda', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dadosPedido)
+            });
+
+            const json = await res.json();
+            if(json.sucesso) {
+                alert("Pedido Nº " + json.id_venda + " gerado com sucesso!");
+                location.reload();
+            } else {
+                alert("Erro ao salvar pedido.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDV - Vendas</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script>
+        function imprimirRecibo() {
+            window.print();
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/">Voltar</a>
+    </nav>
+
+    <h1>Caixa / Nova Venda</h1>
+
+    <div style="display: flex; gap: 30px;">
+        <div style="flex: 1;">
+            <form action="/finalizar-venda" method="POST" onsubmit="setTimeout(imprimirRecibo, 1000)">
+                <label>Vendedor:</label><br>
+                <input type="text" name="vendedor" required placeholder="Nome do vendedor"><br>
+
+                <label>Produto:</label><br>
+                <select name="produto_id" required style="width: 100%; padding: 10px;">
+                    <% produtos.forEach(function(p) { %>
+                        <option value="<%= p.id %>">
+                            <%= p.nome %> (Tam: <%= p.tamanho %>) - R$ <%= p.preco_venda %> | Restam: <%= p.estoque %>
+                        </option>
+                    <% }); %>
+                </select><br><br>
+
+                <label>Quantidade:</label>
+                <input type="number" name="quantidade" value="1" min="1" required><br>
+
+                <label>Forma de Pagamento:</label><br>
+                <select name="pagamento">
+                    <option>Dinheiro</option>
+                    <option>Cartão Crédito</option>
+                    <option>Cartão Débito</option>
+                    <option>PIX</option>
+                </select><br><br>
+
+                <button type="submit" style="width: 100%; font-size: 1.2em;">FINALIZAR VENDA & IMPRIMIR</button>
+            </form>
+        </div>
+
+        <!-- Área simulando o Recibo que aparece na impressão -->
+        <div style="flex: 1; border: 1px dashed #D4AF37; padding: 20px; color: #aaa;">
+            <h3>Simulação do Recibo</h3>
+            <p>Ao clicar em Finalizar, o sistema baixará o estoque, lançará o dinheiro no caixa do dia e abrirá a janela de impressão do navegador.</p>
+        </div>
+    </div>
+</body>
+</html>
