@@ -13,10 +13,8 @@
 
 O sistema foi projetado para substituir planilhas e cadernos, oferecendo controle total sobre o fluxo de caixa, inventário e vendas. A interface utiliza uma paleta de cores escura com detalhes em dourado (`#C19A3F`) para reduzir o cansaço visual e transmitir sofisticação.
 
-*(Adicione suas prints na pasta `screenshots` e descomente as linhas abaixo)*
 
 ![PDV](public/images/login.jpeg) 
-
 
 ---
 
