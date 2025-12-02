@@ -16,7 +16,7 @@ O sistema foi projetado para substituir planilhas e cadernos, oferecendo control
 *(Adicione suas prints na pasta `screenshots` e descomente as linhas abaixo)*
 
 ![PDV](public/images/login.jpeg) 
-![Dashboard](public/images/dashboard.jpegdashboard.jpeg)
+![Dashboard](public/images/dashboard.jpeg)
 
 ---
 
